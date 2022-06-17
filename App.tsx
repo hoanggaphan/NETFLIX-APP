@@ -28,6 +28,7 @@ export default function App() {
         await Font.loadAsync({
           ...FontAwesome.font,
           Montserrat: require('./assets/fonts/Montserrat-Regular.ttf'),
+          MontserratBold: require('./assets/fonts/Montserrat-Bold.ttf'),
         });
 
         // Load theme in storage

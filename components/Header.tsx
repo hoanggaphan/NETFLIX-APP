@@ -12,7 +12,7 @@ export default () => {
       barStyle='default'
       centerComponent={{
         text: 'Netflix',
-        style: { color: '#ff0000', fontSize: 22, fontWeight: 'bold' },
+        style: { color: theme?.theme.primary, fontSize: 22, fontWeight: 'bold' },
       }}
       centerContainerStyle={{}}
       containerStyle={{
@@ -21,18 +21,14 @@ export default () => {
       }}
       leftComponent={{
         icon: 'menu',
-        color: theme?.theme.header.iconColor,
+        color: theme?.theme.iconColor,
       }}
       leftContainerStyle={{}}
       linearGradientProps={{}}
       placement='center'
       rightComponent={{
         children: (
-          <Icon
-            type='ant-design'
-            name='user'
-            color={theme?.theme.header.iconColor}
-          />
+          <Icon type='ant-design' name='user' color={theme?.theme.iconColor} />
         ),
       }}
       rightContainerStyle={{}}

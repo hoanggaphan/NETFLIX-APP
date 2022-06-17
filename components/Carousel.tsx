@@ -1,32 +1,28 @@
 import { Image } from '@rneui/base';
-import { useRef } from 'react';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.85);
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.78);
 
-const data = [
-  {
-    imgUrl:
-      'https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2022/rutmne/2013_02_19/nguoi-nhen.jpg',
-  },
-  {
-    imgUrl:
-      'https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2022/rutmne/2013_02_19/nguoi-nhen.jpg',
-  },
-  {
-    imgUrl:
-      'https://photo-cms-giaoduc.zadn.vn/w700/Uploaded/2022/rutmne/2013_02_19/nguoi-nhen.jpg',
-  },
-];
+type CarouselCardItem = {
+  item: {
+    id: string;
+    name: string;
+    cover_img: string;
+    banner_img: string;
+  };
+  index: number;
+};
 
-const CarouselCardItem = ({ item, index }: any) => {
+const CarouselCardItem = ({ item, index }: CarouselCardItem) => {
   return (
     <View style={styles.container} key={index}>
       <Image
         style={styles.img}
-        source={{ uri: item.imgUrl }}
+        source={{ uri: item.banner_img }}
         PlaceholderContent={<ActivityIndicator />}
       />
     </View>
@@ -35,6 +31,21 @@ const CarouselCardItem = ({ item, index }: any) => {
 
 const CarouselCards = () => {
   const isCarousel = useRef(null);
+  const [data, setData] = useState<any>([]);
+
+  useEffect(() => {
+    async function getMoviesCarousel() {
+      try {
+        const res = await axios.get(
+          'https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/carousels'
+        );
+        setData(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getMoviesCarousel();
+  }, []);
 
   return (
     <View>
@@ -46,6 +57,7 @@ const CarouselCards = () => {
         itemWidth={ITEM_WIDTH}
         firstItem={1}
         renderItem={CarouselCardItem}
+        centerContent
       />
     </View>
   );

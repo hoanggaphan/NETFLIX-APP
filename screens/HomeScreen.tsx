@@ -8,6 +8,7 @@ import { useTheme } from '../context/ThemeProvider';
 import { Button } from '@rneui/base';
 import { View } from 'react-native';
 import CarouselCards from '../components/Carousel';
+import MoviesRow from '../components/MoviesRow';
 
 // type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -25,13 +26,26 @@ const HomeScreen: React.FC = () => {
           onPress={() => navigation.navigate('Detail', { name: 'One piece' })}
         /> */}
 
-        <Button
+        {/* <Button
           title='Đổi màu'
           onPress={() => theme?.updateTheme(theme.theme.themeMode)}
-        />
+        /> */}
 
-        <View>
+        <View style={{ marginTop: 15 }}>
           <CarouselCards />
+
+          <View style={{ marginTop: 35 }}>
+            <MoviesRow title='Phim đã xem' />
+          </View>
+          <View style={{ marginTop: 35 }}>
+            <MoviesRow title='Phổ biến trên Netflix' />
+          </View>
+          <View style={{ marginTop: 35 }}>
+            <MoviesRow title='Hiện đang thịnh hành' />
+          </View>
+          <View style={{ marginTop: 35 }}>
+            <MoviesRow title='Netflix bản quyèn' />
+          </View>
         </View>
       </Body>
     </Screen>
