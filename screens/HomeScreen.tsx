@@ -1,20 +1,29 @@
-// import { useNavigation } from '@react-navigation/native';
-// import { Button } from '@rneui/base';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Body, Screen } from '../components';
 import Header from '../components/Header';
 import { useTheme } from '../context/ThemeProvider';
-// import { RootStackParamList } from '../types/navigation';
-import { Button } from '@rneui/base';
 import { View } from 'react-native';
 import CarouselCards from '../components/Carousel';
 import MoviesRow from '../components/MoviesRow';
-
-// type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+import axios from 'axios';
+import { Movie } from '../types/movie';
 
 const HomeScreen: React.FC = () => {
-  // const navigation = useNavigation<HomeScreenNavigationProp>();
   const theme = useTheme();
+  const [data, setData] = useState<Movie[]>([]);
+  useEffect(() => {
+    async function getMovies() {
+      try {
+        const res = await axios.get(
+          'https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/movies'
+        );
+        setData(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getMovies();
+  }, []);
 
   return (
     <Screen style={{ backgroundColor: theme?.theme.backgroundColor }}>
@@ -35,16 +44,13 @@ const HomeScreen: React.FC = () => {
           <CarouselCards />
 
           <View style={{ marginTop: 35 }}>
-            <MoviesRow title='Phim đã xem' />
+            <MoviesRow title='Phim đã xem' data={data} />
           </View>
           <View style={{ marginTop: 35 }}>
-            <MoviesRow title='Phổ biến trên Netflix' />
+            <MoviesRow title='Phổ biến trên Netflix' data={data} />
           </View>
           <View style={{ marginTop: 35 }}>
-            <MoviesRow title='Hiện đang thịnh hành' />
-          </View>
-          <View style={{ marginTop: 35 }}>
-            <MoviesRow title='Netflix bản quyèn' />
+            <MoviesRow title='Hiện đang thịnh hành' data={data} />
           </View>
         </View>
       </Body>

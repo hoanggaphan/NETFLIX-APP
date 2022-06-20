@@ -1,6 +1,7 @@
 export const darkTheme = {
   backgroundColor: '#333',
   textColor: '#fff',
+  subTextColor: 'rgba(255,255,255,.7)',
   iconColor: '#fff',
   themeMode: 'dark',
   primary: '#ff0000',
@@ -10,6 +11,7 @@ export const darkTheme = {
 export const defaultTheme = {
   backgroundColor: '#fff',
   textColor: '#333',
+  subTextColor: 'rgba(0,0,0,.7)',
   iconColor: '#333',
   themeMode: 'default',
   primary: '#ff0000',

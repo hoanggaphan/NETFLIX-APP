@@ -7,7 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { darkTheme, defaultTheme } from './constants/theme';
 import ThemeProvider from './context/ThemeProvider';
 import Navigation from './navigation';
-import { LogBox } from 'react-native';
+import { LogBox, StatusBar } from 'react-native';
 
 LogBox.ignoreLogs([
   'ViewPropTypes will be removed',
@@ -60,6 +60,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <Navigation onMounted={onLayoutRootView} />
       </ThemeProvider>
+      <StatusBar hidden={true} />
     </SafeAreaProvider>
   );
 }

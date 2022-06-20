@@ -1,9 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/base';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
-import { BaseText, BoldText } from '.';
+import { BoldText } from '.';
 import { useTheme } from '../context/ThemeProvider';
+import { Movie } from '../types/movie';
+import { DetailScreenNavigationProp } from '../types/navigation';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,35 +18,28 @@ const styles = StyleSheet.create({
   },
 });
 
-const MovieItem = ({ item, index }: any) => {
-  return (
-    <View style={styles.container} key={index}>
-      <Image
-        style={styles.img}
-        source={{ uri: item.cover_img }}
-        PlaceholderContent={<ActivityIndicator />}
-      />
-    </View>
-  );
-};
-
-export default ({ title }: { title: string }) => {
-  const [data, setData] = useState<any>([]);
+export default ({ title, data }: { title: string; data: Movie[] }) => {
   const theme = useTheme();
+  const navigation = useNavigation<DetailScreenNavigationProp>();
 
-  useEffect(() => {
-    async function getMovies() {
-      try {
-        const res = await axios.get(
-          'https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/movies'
-        );
-        setData(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getMovies();
-  }, []);
+  const MovieItem = ({ item, index }: { item: Movie; index: number }) => {
+    const handlePress = () => {
+      navigation.navigate('Detail', { id: item.id, title: item.name });
+    };
+
+    return (
+      <View style={styles.container} key={index}>
+        <Image
+          onPress={handlePress}
+          style={styles.img}
+          source={{ uri: item.cover_img }}
+          PlaceholderContent={<ActivityIndicator />}
+        />
+      </View>
+    );
+  };
+
+  const MemoizedMovieItem = useMemo(() => MovieItem, [data]);
 
   return (
     <View>
@@ -52,8 +47,7 @@ export default ({ title }: { title: string }) => {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: 10,
+          marginBottom: 15,
         }}
       >
         <BoldText
@@ -61,25 +55,23 @@ export default ({ title }: { title: string }) => {
             color: theme?.theme.textColor,
             textTransform: 'capitalize',
             fontSize: 13,
+            marginRight: 7,
           }}
         >
           {title}
         </BoldText>
 
-        <BaseText
-          style={{
-            color: theme?.theme.primary,
-            fontSize: 13,
-            marginRight: 10,
-          }}
-        >
-          Xem thêm
-        </BaseText>
+        <Icon
+          size={22}
+          color={theme?.theme.iconColor}
+          name='keyboard-arrow-right'
+          type='MaterialIcons'
+        />
       </View>
 
       <FlatList
         data={data}
-        renderItem={MovieItem}
+        renderItem={MemoizedMovieItem}
         keyExtractor={(item) => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
