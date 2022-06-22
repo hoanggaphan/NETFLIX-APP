@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Image } from '@rneui/base';
+import { Image, Skeleton } from '@rneui/base';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { BaseText, BoldText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
+import useIsMounted from '../hooks/useIsMounted';
 import { Episode, Movie } from '../types/movie';
 import {
   DetailScreenRouteProp,
@@ -41,6 +42,7 @@ const DetailScreen: React.FC = () => {
   const [data, setData] = useState<Movie>();
   const navigation = useNavigation<WatchScreenNavigationProp>();
   const [episodes, setEpisodes] = useState<Episode[]>();
+  const isMounted = useIsMounted();
 
   useEffect(() => {
     async function getMovie() {
@@ -53,7 +55,7 @@ const DetailScreen: React.FC = () => {
         console.error(error);
       }
     }
-    getMovie();
+    isMounted() && getMovie();
   }, []);
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const DetailScreen: React.FC = () => {
         console.error(error);
       }
     }
-    getEpisodes();
+    isMounted() && getEpisodes();
   }, []);
 
   const handlePress = (id: string, title: string) => {
@@ -84,181 +86,206 @@ const DetailScreen: React.FC = () => {
         />
       </View>
       <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-        <BaseText
-          style={{
-            color: theme?.theme.textColor,
-            fontSize: 25,
-            marginTop: 15,
-          }}
-        >
-          {data?.name}
-        </BaseText>
-
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-          <BaseText
-            style={{
-              flexBasis: 120,
-              color: theme?.theme.textColor,
-            }}
-          >
-            Thể loại:
-          </BaseText>
-
-          <View
-            style={{
-              flexBasis: 'auto',
-              flexShrink: 1,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
-            {genres.map((item, i) => (
-              <BaseText
-                key={i}
-                style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
-              >
-                {item}
-                {i < genres.length - 1 ? ', ' : ''}
-              </BaseText>
-            ))}
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-          <BaseText
-            style={{
-              flexBasis: 120,
-              color: theme?.theme.textColor,
-            }}
-          >
-            Điểm:
-          </BaseText>
-
-          <BaseText
-            style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
-          >
-            {data?.score}
-          </BaseText>
-        </View>
-
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-          <BaseText
-            style={{
-              flexBasis: 120,
-              color: theme?.theme.textColor,
-            }}
-          >
-            Diễn viên:
-          </BaseText>
-
-          <View
-            style={{
-              flexBasis: 'auto',
-              flexShrink: 1,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
-            {actors.map((item, i) => (
-              <BaseText
-                key={i}
-                style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
-              >
-                {item}
-                {i < actors.length - 1 ? ', ' : ''}
-              </BaseText>
-            ))}
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-          <BaseText
-            style={{
-              flexBasis: 120,
-              color: theme?.theme.textColor,
-            }}
-          >
-            Đạo diễn:
-          </BaseText>
-
-          <View
-            style={{
-              flexBasis: 'auto',
-              flexShrink: 1,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
-            {creators.map((item, i) => (
-              <BaseText
-                key={i}
-                style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
-              >
-                {item}
-                {i < creators.length - 1 ? ', ' : ''}
-              </BaseText>
-            ))}
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-          <BaseText
-            style={{
-              flexBasis: 120,
-              color: theme?.theme.textColor,
-            }}
-          >
-            Số tập:
-          </BaseText>
-
-          <BaseText style={{ color: theme?.theme.subTextColor }}>
-            {data?.eposides_count}
-          </BaseText>
-        </View>
-
-        <BoldText style={{ marginTop: 40, color: theme?.theme.textColor }}>
-          Danh sách tập
-        </BoldText>
-
-        <View style={{ marginTop: 15 }}>
-          {episodes?.map((item, i) => (
-            <TouchableOpacity
-              key={i}
+        {data ? (
+          <>
+            <BaseText
               style={{
-                flexDirection: 'row',
-                marginBottom: 13,
+                color: theme?.theme.textColor,
+                fontSize: 25,
+                marginTop: 15,
               }}
-              onPress={() => handlePress(item.id, item.name)}
             >
-              <Image
+              {data?.name}
+            </BaseText>
+
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+              <BaseText
                 style={{
-                  width: 130,
-                  height: 80,
+                  flexBasis: 120,
+                  color: theme?.theme.textColor,
                 }}
-                source={{ uri: item.img }}
-                PlaceholderContent={<ActivityIndicator />}
-              />
-              <View style={{ marginLeft: 10, flexShrink: 1 }}>
-                <BaseText
-                  numberOfLines={1}
-                  style={{ fontSize: 15, color: theme?.theme.textColor }}
-                >
-                  {item.name}
-                </BaseText>
-                <BaseText
-                  numberOfLines={1}
-                  style={{
-                    marginTop: 8,
-                    fontSize: 12,
-                    color: theme?.theme.subTextColor,
-                  }}
-                >
-                  {item.subName} - {item.duration} phút
-                </BaseText>
+              >
+                Thể loại:
+              </BaseText>
+
+              <View
+                style={{
+                  flexBasis: 'auto',
+                  flexShrink: 1,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {genres.map((item, i) => (
+                  <BaseText
+                    key={i}
+                    style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
+                  >
+                    {item}
+                    {i < genres.length - 1 ? ', ' : ''}
+                  </BaseText>
+                ))}
               </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+              <BaseText
+                style={{
+                  flexBasis: 120,
+                  color: theme?.theme.textColor,
+                }}
+              >
+                Điểm:
+              </BaseText>
+
+              <BaseText
+                style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
+              >
+                {data?.score}
+              </BaseText>
+            </View>
+
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+              <BaseText
+                style={{
+                  flexBasis: 120,
+                  color: theme?.theme.textColor,
+                }}
+              >
+                Diễn viên:
+              </BaseText>
+
+              <View
+                style={{
+                  flexBasis: 'auto',
+                  flexShrink: 1,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {actors.map((item, i) => (
+                  <BaseText
+                    key={i}
+                    style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
+                  >
+                    {item}
+                    {i < actors.length - 1 ? ', ' : ''}
+                  </BaseText>
+                ))}
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+              <BaseText
+                style={{
+                  flexBasis: 120,
+                  color: theme?.theme.textColor,
+                }}
+              >
+                Đạo diễn:
+              </BaseText>
+
+              <View
+                style={{
+                  flexBasis: 'auto',
+                  flexShrink: 1,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {creators.map((item, i) => (
+                  <BaseText
+                    key={i}
+                    style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
+                  >
+                    {item}
+                    {i < creators.length - 1 ? ', ' : ''}
+                  </BaseText>
+                ))}
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+              <BaseText
+                style={{
+                  flexBasis: 120,
+                  color: theme?.theme.textColor,
+                }}
+              >
+                Số tập:
+              </BaseText>
+
+              <BaseText style={{ color: theme?.theme.subTextColor }}>
+                {data?.eposides_count}
+              </BaseText>
+            </View>
+
+            <BoldText style={{ marginTop: 40, color: theme?.theme.textColor }}>
+              Danh sách tập
+            </BoldText>
+
+            <View style={{ marginTop: 15 }}>
+              {episodes?.map((item, i) => (
+                <TouchableOpacity
+                  key={i}
+                  style={{
+                    flexDirection: 'row',
+                    marginBottom: 13,
+                  }}
+                  onPress={() => handlePress(item.id, item.name)}
+                >
+                  <Image
+                    style={{
+                      width: 130,
+                      height: 80,
+                    }}
+                    source={{ uri: item.img }}
+                    PlaceholderContent={<ActivityIndicator />}
+                  />
+                  <View style={{ marginLeft: 10, flexShrink: 1 }}>
+                    <BaseText
+                      numberOfLines={1}
+                      style={{ fontSize: 15, color: theme?.theme.textColor }}
+                    >
+                      {item.name}
+                    </BaseText>
+                    <BaseText
+                      numberOfLines={1}
+                      style={{
+                        marginTop: 8,
+                        fontSize: 12,
+                        color: theme?.theme.subTextColor,
+                      }}
+                    >
+                      {item.subName} - {item.duration} phút
+                    </BaseText>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={{ marginTop: 15, width: '100%' }}>
+              <Skeleton height={12} />
+            </View>
+            <View style={{ marginTop: 15, width: '100%' }}>
+              <Skeleton height={12} />
+            </View>
+            <View style={{ marginTop: 15, width: '100%' }}>
+              <Skeleton height={12} />
+            </View>
+            <View style={{ marginTop: 15, width: '100%' }}>
+              <Skeleton height={12} />
+            </View>
+            <View style={{ marginTop: 15, width: '50%' }}>
+              <Skeleton height={12} />
+            </View>
+            <View style={{ marginTop: 15, width: '50%' }}>
+              <Skeleton height={12} />
+            </View>
+          </>
+        )}
       </View>
     </Screen>
   );
