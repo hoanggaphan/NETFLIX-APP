@@ -7,6 +7,7 @@ import CarouselCards from '../components/Carousel';
 import MoviesRow from '../components/MoviesRow';
 import axios from 'axios';
 import { Movie } from '../types/movie';
+import { Button } from '@rneui/base';
 
 const HomeScreen: React.FC = () => {
   const theme = useTheme();
@@ -30,11 +31,6 @@ const HomeScreen: React.FC = () => {
       <Header />
 
       <Body>
-        {/* <Button
-          title='Go to One piece movie detail'
-          onPress={() => navigation.navigate('Detail', { name: 'One piece' })}
-        /> */}
-
         {/* <Button
           title='Đổi màu'
           onPress={() => theme?.updateTheme(theme.theme.themeMode)}

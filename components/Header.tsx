@@ -1,5 +1,4 @@
 import { Header } from '@rneui/base';
-import { Icon } from '@rneui/themed';
 import React from 'react';
 import { useTheme } from '../context/ThemeProvider';
 
@@ -12,25 +11,22 @@ export default () => {
       barStyle='default'
       centerComponent={{
         text: 'Netflix',
-        style: { color: theme?.theme.primary, fontSize: 22, fontWeight: 'bold' },
+        style: {
+          color: theme?.theme.primary,
+          fontSize: 22,
+          fontWeight: 'bold',
+        },
       }}
       centerContainerStyle={{}}
       containerStyle={{
         width: '100%',
         borderBottomWidth: 0,
       }}
-      leftComponent={{
-        icon: 'menu',
-        color: theme?.theme.iconColor,
-      }}
+      leftComponent={{}}
       leftContainerStyle={{}}
       linearGradientProps={{}}
       placement='center'
-      rightComponent={{
-        children: (
-          <Icon type='ant-design' name='user' color={theme?.theme.iconColor} />
-        ),
-      }}
+      rightComponent={{}}
       rightContainerStyle={{}}
       statusBarProps={{}}
     />

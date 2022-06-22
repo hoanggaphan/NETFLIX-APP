@@ -8,6 +8,7 @@ import { darkTheme, defaultTheme } from './constants/theme';
 import ThemeProvider from './context/ThemeProvider';
 import Navigation from './navigation';
 import { LogBox, StatusBar } from 'react-native';
+import CustomStatusBar from './components/CustomStatusBar';
 
 LogBox.ignoreLogs([
   'ViewPropTypes will be removed',
@@ -59,8 +60,8 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
         <Navigation onMounted={onLayoutRootView} />
+        <CustomStatusBar />
       </ThemeProvider>
-      <StatusBar hidden={true} />
     </SafeAreaProvider>
   );
 }
