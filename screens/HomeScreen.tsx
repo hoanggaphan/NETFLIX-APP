@@ -31,11 +31,6 @@ const HomeScreen: React.FC = () => {
       <Header />
 
       <Body>
-        {/* <Button
-          title='Đổi màu'
-          onPress={() => theme?.updateTheme(theme.theme.themeMode)}
-        /> */}
-
         <View style={{ marginTop: 15 }}>
           <CarouselCards />
 

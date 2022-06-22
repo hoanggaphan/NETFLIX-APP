@@ -7,6 +7,9 @@ export const darkTheme = {
   themeMode: 'dark',
   primary: '#ff0000',
   secondary: '#b30000',
+  tabBarBG: '#333',
+  tabBarBorderTopColor: '#4d4d4d',
+  tabBarIcon: 'white',
 };
 
 export const defaultTheme = {
@@ -18,4 +21,7 @@ export const defaultTheme = {
   themeMode: 'default',
   primary: '#ff0000',
   secondary: '#b30000',
+  tabBarBG: 'white',
+  tabBarBorderTopColor: '#4d4d4d',
+  tabBarIcon: 'black',
 };
