@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Body, Screen } from '../components';
-import Header from '../components/Header';
-import { useTheme } from '../context/ThemeProvider';
-import { View } from 'react-native';
-import CarouselCards from '../components/Carousel';
-import MoviesRow from '../components/MoviesRow';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { Body, Screen } from '../components';
+import CarouselCards from '../components/Carousel';
+import Header from '../components/Header';
+import MoviesRow from '../components/MoviesRow';
+import { useTheme } from '../context/ThemeProvider';
 import { Movie } from '../types/movie';
-import { Button } from '@rneui/base';
 
 const HomeScreen: React.FC = () => {
   const theme = useTheme();

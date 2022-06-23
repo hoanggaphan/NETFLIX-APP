@@ -1,8 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Image } from '@rneui/base';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useMemo } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
-import { BoldText } from '.';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { BaseText, BoldText } from '.';
 import { useTheme } from '../context/ThemeProvider';
 import { Movie } from '../types/movie';
 import { DetailScreenNavigationProp } from '../types/navigation';
@@ -14,6 +21,21 @@ const styles = StyleSheet.create({
   img: {
     width: 122,
     height: 180,
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 11,
+    position: 'absolute',
+    left: 10,
+    bottom: 10,
+    paddingRight: 10,
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
     borderRadius: 10,
   },
 });
@@ -28,14 +50,30 @@ export default ({ title, data }: { title: string; data: Movie[] }) => {
     };
 
     return (
-      <View style={styles.container} key={index}>
+      <TouchableOpacity
+        onPress={handlePress}
+        style={styles.container}
+        key={index}
+      >
         <Image
-          onPress={handlePress}
           style={styles.img}
           source={{ uri: item.cover_img }}
           PlaceholderContent={<ActivityIndicator />}
         />
-      </View>
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,.7)']}
+          style={styles.background}
+        />
+        <BaseText
+          numberOfLines={2}
+          style={{
+            ...styles.title,
+            color: theme?.theme.textColor,
+          }}
+        >
+          {item.name}
+        </BaseText>
+      </TouchableOpacity>
     );
   };
 
