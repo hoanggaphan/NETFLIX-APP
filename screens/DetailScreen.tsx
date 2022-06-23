@@ -236,15 +236,15 @@ const DetailScreen: React.FC = () => {
                 >
                   <Image
                     style={{
-                      width: 130,
-                      height: 80,
+                      width: 160,
+                      height: 90,
                     }}
                     source={{ uri: item.img }}
                     PlaceholderContent={<ActivityIndicator />}
                   />
-                  <View style={{ marginLeft: 10, flexShrink: 1 }}>
+                  <View style={{ marginLeft: 15, flexShrink: 1 }}>
                     <BaseText
-                      numberOfLines={1}
+                      numberOfLines={2}
                       style={{ fontSize: 15, color: theme?.theme.textColor }}
                     >
                       {item.name}
