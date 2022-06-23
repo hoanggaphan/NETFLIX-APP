@@ -174,7 +174,6 @@ const SearchScreen: React.FC = () => {
           numberOfLines={1}
           style={{
             ...styles.title,
-            color: theme?.theme.textColor,
           }}
         >
           {item.name}
@@ -237,7 +236,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
     bottom: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    color: 'white',
   },
   background: {
     position: 'absolute',
