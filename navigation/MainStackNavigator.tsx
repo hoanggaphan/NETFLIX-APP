@@ -1,7 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from '../context/ThemeProvider';
 import DetailScreen from '../screens/DetailScreen';
+import EditUserScreen from '../screens/EditUserScreen';
 import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from '../screens/LoginScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import WatchScreen from '../screens/WatchScreen';
 
 const Stack = createNativeStackNavigator();
@@ -49,4 +52,47 @@ function MainStackNavigator() {
   );
 }
 
-export { MainStackNavigator };
+function UserStackNavigator() {
+  const theme = useTheme();
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: theme?.theme.backgroundColor,
+        },
+        headerShadowVisible: false,
+        headerTintColor: theme?.theme.iconColor,
+      }}
+    >
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: 'Cài đặt',
+        }}
+        name='Settings'
+        component={SettingsScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: 'Đăng nhập',
+          headerBackTitle: '',
+        }}
+        name='Login'
+        component={LoginScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: 'Chỉnh sửa',
+          headerBackTitle: '',
+        }}
+        name='EditUser'
+        component={EditUserScreen}
+      />
+    </Stack.Navigator>
+  );
+}
+
+export { MainStackNavigator, UserStackNavigator };

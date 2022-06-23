@@ -5,12 +5,16 @@ export type RootStackParamList = {
   Home: undefined;
   Detail: { id: string; title: string };
   Watch: { id: string; title: string };
-  // Feed: { sort: 'latest' | 'top' } | undefined;
 };
 
-export type DetailScreenRouteProp = RouteProp<RootStackParamList>;
-export type DetailScreenNavigationProp = NavigationProp<RootStackParamList>;
-export type WatchScreenRouteProp = RouteProp<RootStackParamList>;
-export type WatchScreenNavigationProp =
+export type RootStackNavigationProp = NavigationProp<RootStackParamList>;
+export type RootStackNativeStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
-// type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+export type RootStackRouteProp = RouteProp<RootStackParamList>;
+
+export type UserStackParamList = {
+  Settings: undefined;
+  Login: undefined;
+  EditUser: undefined;
+};
+export type UserStackNavigationProp = NavigationProp<UserStackParamList>;

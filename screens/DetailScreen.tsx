@@ -13,8 +13,8 @@ import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
 import { Episode, Movie } from '../types/movie';
 import {
-  DetailScreenRouteProp,
-  WatchScreenNavigationProp,
+  RootStackNavigationProp,
+  RootStackRouteProp,
 } from '../types/navigation';
 
 const styles = StyleSheet.create({
@@ -37,10 +37,10 @@ const creators = ['AlizaBeth', 'John Wick'];
 const genres = ['hành động', 'tình cảm', 'hành động', 'tình cảm'];
 
 const DetailScreen: React.FC = () => {
-  const route = useRoute<DetailScreenRouteProp>();
+  const route = useRoute<RootStackRouteProp>();
   const theme = useTheme();
   const [data, setData] = useState<Movie>();
-  const navigation = useNavigation<WatchScreenNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
   const [episodes, setEpisodes] = useState<Episode[]>();
   const isMounted = useIsMounted();
 

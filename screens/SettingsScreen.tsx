@@ -1,8 +1,9 @@
-import { Button, Icon } from '@rneui/base';
+import { useNavigation } from '@react-navigation/native';
+import { Avatar, Button, Icon } from '@rneui/base';
 import { StyleSheet, View } from 'react-native';
 import { BaseText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
-import { Avatar } from '@rneui/base';
+import { UserStackNavigationProp } from '../types/navigation';
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -18,8 +19,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const UserScreen: React.FC = () => {
+const SettingsScreen: React.FC = () => {
   const theme = useTheme();
+  const navigation = useNavigation<UserStackNavigationProp>();
+
+  const handlePressLogin = () => {
+    navigation.navigate('Login');
+  };
+
+  const handlePressEdit = () => {
+    navigation.navigate('EditUser');
+  };
 
   return (
     <Screen style={{ backgroundColor: theme?.theme.backgroundColor }}>
@@ -39,11 +49,12 @@ const UserScreen: React.FC = () => {
           source={{
             uri: 'https://randomuser.me/api/portraits/men/36.jpg',
           }}
-          containerStyle={{ backgroundColor: '#6733b9' }}
+          containerStyle={{ backgroundColor: theme?.theme.avatarBgColor }}
         />
       </View>
 
       <Button
+        onPress={handlePressLogin}
         buttonStyle={{
           borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
         }}
@@ -65,6 +76,7 @@ const UserScreen: React.FC = () => {
         </BaseText>
       </Button>
       <Button
+        onPress={handlePressEdit}
         buttonStyle={{
           borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
         }}
@@ -111,4 +123,4 @@ const UserScreen: React.FC = () => {
   );
 };
 
-export default UserScreen;
+export default SettingsScreen;

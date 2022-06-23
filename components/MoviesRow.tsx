@@ -12,7 +12,7 @@ import {
 import { BaseText, BoldText } from '.';
 import { useTheme } from '../context/ThemeProvider';
 import { Movie } from '../types/movie';
-import { DetailScreenNavigationProp } from '../types/navigation';
+import { RootStackNavigationProp } from '../types/navigation';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
 export default ({ title, data }: { title: string; data: Movie[] }) => {
   const theme = useTheme();
-  const navigation = useNavigation<DetailScreenNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const MovieItem = ({ item, index }: { item: Movie; index: number }) => {
     const handlePress = () => {

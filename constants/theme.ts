@@ -10,6 +10,7 @@ export const darkTheme = {
   tabBarBG: '#333',
   tabBarBorderTopColor: '#4d4d4d',
   tabBarIcon: 'white',
+  avatarBgColor: '#bdbdbd',
 };
 
 export const defaultTheme = {
@@ -24,4 +25,5 @@ export const defaultTheme = {
   tabBarBG: 'white',
   tabBarBorderTopColor: '#4d4d4d',
   tabBarIcon: 'black',
+  avatarBgColor: '#bdbdbd',
 };

@@ -12,7 +12,7 @@ import {
 import { BaseText } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import { Movie } from '../types/movie';
-import { DetailScreenNavigationProp } from '../types/navigation';
+import { RootStackNavigationProp } from '../types/navigation';
 
 const data = [
   {
@@ -140,7 +140,7 @@ const data = [
 const SearchScreen: React.FC = () => {
   const theme = useTheme();
   const [search, setSearch] = useState('');
-  const navigation = useNavigation<DetailScreenNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const handleChange = (search: string) => {
     setSearch(search);

@@ -15,14 +15,14 @@ import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
 import { Episode } from '../types/movie';
 import {
-  WatchScreenNavigationProp,
-  WatchScreenRouteProp,
+  RootStackNativeStackNavigationProp,
+  RootStackRouteProp,
 } from '../types/navigation';
 
 export default function WatchScreen() {
   const theme = useTheme();
-  const navigation = useNavigation<WatchScreenNavigationProp>();
-  const route = useRoute<WatchScreenRouteProp>();
+  const navigation = useNavigation<RootStackNativeStackNavigationProp>();
+  const route = useRoute<RootStackRouteProp>();
   const [episodes, setEpisodes] = useState<Episode[]>();
   const [episode, setEpisode] = useState<Episode>();
   const scrollRef = useRef<ScrollView>();

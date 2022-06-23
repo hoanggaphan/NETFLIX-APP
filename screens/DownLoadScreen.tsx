@@ -3,7 +3,7 @@ import { Image } from '@rneui/base';
 import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import { BaseText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
-import { WatchScreenNavigationProp } from '../types/navigation';
+import { RootStackNavigationProp } from '../types/navigation';
 
 const data = [
   {
@@ -92,7 +92,7 @@ const data = [
 
 const DownLoadScreen: React.FC = () => {
   const theme = useTheme();
-  const navigation = useNavigation<WatchScreenNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const handlePress = (id: string, title: string) => {
     navigation.navigate('Watch', { id, title });

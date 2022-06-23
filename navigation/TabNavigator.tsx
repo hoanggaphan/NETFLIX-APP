@@ -3,8 +3,8 @@ import { Icon } from '@rneui/base';
 import { useTheme } from '../context/ThemeProvider';
 import DownLoadScreen from '../screens/DownLoadScreen';
 import SearchScreen from '../screens/SearchScreen';
-import UserScreen from '../screens/UserScreen';
-import { MainStackNavigator } from './MainStackNavigator';
+import UserScreen from '../screens/SettingsScreen';
+import { MainStackNavigator, UserStackNavigator } from './MainStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -99,21 +99,22 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Icon
-                type='font-awesome'
-                name='user'
+                type='ionicon'
+                name='settings'
                 color={theme?.theme.tabBarIcon}
               />
             ) : (
               <Icon
-                type='font-awesome'
-                name='user-o'
+                type='ionicon'
+                name='settings-outline'
                 color={theme?.theme.tabBarIcon}
               />
             ),
-          title: 'Người dùng',
+          title: 'Cài đặt',
+          headerShown: false,
         }}
-        name='MyList'
-        component={UserScreen}
+        name='User'
+        component={UserStackNavigator}
       />
     </Tab.Navigator>
   );
