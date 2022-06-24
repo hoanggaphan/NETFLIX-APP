@@ -1,6 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon, Image, Skeleton } from '@rneui/base';
-import axios from 'axios';
 import { ResizeMode, Video } from 'expo-av';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -10,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { getEpisode, getEpisodes } from '../api/EpisodeApi';
 import { BaseText, BoldText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
@@ -29,31 +29,17 @@ export default function WatchScreen() {
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    async function getEpisode() {
-      try {
-        const res = await axios.get(
-          `https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/episodes/${route.params?.id}`
-        );
-        setEpisode(res.data);
-      } catch (error) {
-        console.error(error);
-      }
+    if (route.params?.id) {
+      getEpisode(route.params.id)
+        .then((res) => isMounted() && setEpisode(res))
+        .catch((err) => console.error(err));
     }
-    isMounted() && getEpisode();
   }, []);
 
   useEffect(() => {
-    async function getEpisodes() {
-      try {
-        const res = await axios.get(
-          `https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/episodes`
-        );
-        setEpisodes(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    isMounted() && getEpisodes();
+    getEpisodes()
+      .then((res) => isMounted() && setEpisodes(res))
+      .catch((err) => console.error(err));
   }, []);
 
   const handlePress = (id: string, title: string) => {

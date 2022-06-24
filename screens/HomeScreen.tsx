@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { getMovies } from '../api/MovieApi';
 import { Body, Screen } from '../components';
 import CarouselCards from '../components/Carousel';
 import Header from '../components/Header';
@@ -11,18 +11,11 @@ import { Movie } from '../types/movie';
 const HomeScreen: React.FC = () => {
   const theme = useTheme();
   const [data, setData] = useState<Movie[]>([]);
+
   useEffect(() => {
-    async function getMovies() {
-      try {
-        const res = await axios.get(
-          'https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/movies'
-        );
-        setData(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getMovies();
+    getMovies()
+      .then((res) => setData(res))
+      .catch((err) => console.error(err));
   }, []);
 
   return (

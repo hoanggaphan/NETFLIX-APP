@@ -1,8 +1,8 @@
 import { Image } from '@rneui/base';
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import { getMoviesCarousel } from '../api/MovieApi';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.78);
@@ -34,17 +34,9 @@ const CarouselCards = () => {
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
-    async function getMoviesCarousel() {
-      try {
-        const res = await axios.get(
-          'https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/carousels'
-        );
-        setData(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getMoviesCarousel();
+    getMoviesCarousel()
+      .then((res) => setData(res))
+      .catch((err) => console.error(err));
   }, []);
 
   return (

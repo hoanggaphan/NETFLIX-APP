@@ -1,6 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Image, Skeleton } from '@rneui/base';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -8,6 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { getEpisodes } from '../api/EpisodeApi';
+import { getMovie } from '../api/MovieApi';
 import { BaseText, BoldText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
@@ -45,31 +46,17 @@ const DetailScreen: React.FC = () => {
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    async function getMovie() {
-      try {
-        const res = await axios.get(
-          `https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/movies/${route.params?.id}`
-        );
-        setData(res.data);
-      } catch (error) {
-        console.error(error);
-      }
+    if (route.params?.id) {
+      getMovie(route.params.id)
+        .then((res) => isMounted() && setData(res))
+        .catch((err) => console.error(err));
     }
-    isMounted() && getMovie();
   }, []);
 
   useEffect(() => {
-    async function getEpisodes() {
-      try {
-        const res = await axios.get(
-          `https://62a9a4c63b3143855437cc70.mockapi.io/api/v1/episodes`
-        );
-        setEpisodes(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    isMounted() && getEpisodes();
+    getEpisodes()
+      .then((res) => isMounted() && setEpisodes(res))
+      .catch((err) => console.error(err));
   }, []);
 
   const handlePress = (id: string, title: string) => {
