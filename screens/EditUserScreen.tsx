@@ -1,4 +1,4 @@
-import { Avatar, Button, Icon, Input } from '@rneui/base';
+import { Avatar, Button, Icon } from '@rneui/base';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { Screen } from '../components';

@@ -44,20 +44,20 @@ export default ({ title, data }: { title: string; data: Movie[] }) => {
   const theme = useTheme();
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const MovieItem = ({ item, index }: { item: Movie; index: number }) => {
-    const handlePress = () => {
-      navigation.navigate('Detail', { id: item.id, title: item.name });
-    };
+  const handlePress = (item: Movie) => {
+    navigation.navigate('Detail', { id: item._id, title: item.name });
+  };
 
+  const MovieItem = ({ item, index }: { item: Movie; index: number }) => {
     return (
       <TouchableOpacity
-        onPress={handlePress}
+        onPress={() => handlePress(item)}
         style={styles.container}
         key={index}
       >
         <Image
           style={styles.img}
-          source={{ uri: item.cover_img }}
+          source={{ uri: item.coverImg }}
           PlaceholderContent={<ActivityIndicator />}
         />
         <LinearGradient
@@ -110,7 +110,7 @@ export default ({ title, data }: { title: string; data: Movie[] }) => {
       <FlatList
         data={data}
         renderItem={MemoizedMovieItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         horizontal
         showsHorizontalScrollIndicator={false}
       />

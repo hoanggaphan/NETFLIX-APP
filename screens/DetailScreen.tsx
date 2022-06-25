@@ -25,18 +25,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const actors = [
-  'AlizaBeth',
-  'John Wick',
-  'AlizaBeth',
-  'John Wick',
-  'AlizaBeth',
-  'John Wick',
-];
-
-const creators = ['AlizaBeth', 'John Wick'];
-const genres = ['hành động', 'tình cảm', 'hành động', 'tình cảm'];
-
 const DetailScreen: React.FC = () => {
   const route = useRoute<RootStackRouteProp>();
   const theme = useTheme();
@@ -68,7 +56,7 @@ const DetailScreen: React.FC = () => {
       <View style={{ position: 'relative' }}>
         <Image
           style={styles.bg}
-          source={{ uri: data?.cover_img }}
+          source={{ uri: data?.coverImg }}
           PlaceholderContent={<ActivityIndicator />}
         />
       </View>
@@ -103,13 +91,13 @@ const DetailScreen: React.FC = () => {
                   flexWrap: 'wrap',
                 }}
               >
-                {genres.map((item, i) => (
+                {data.genres.map((item, i) => (
                   <BaseText
                     key={i}
                     style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
                   >
                     {item}
-                    {i < genres.length - 1 ? ', ' : ''}
+                    {i < data.genres.length - 1 ? ', ' : ''}
                   </BaseText>
                 ))}
               </View>
@@ -150,13 +138,13 @@ const DetailScreen: React.FC = () => {
                   flexWrap: 'wrap',
                 }}
               >
-                {actors.map((item, i) => (
+                {data.actors.map((item, i) => (
                   <BaseText
                     key={i}
                     style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
                   >
                     {item}
-                    {i < actors.length - 1 ? ', ' : ''}
+                    {i < data.actors.length - 1 ? ', ' : ''}
                   </BaseText>
                 ))}
               </View>
@@ -180,13 +168,13 @@ const DetailScreen: React.FC = () => {
                   flexWrap: 'wrap',
                 }}
               >
-                {creators.map((item, i) => (
+                {data.creators.map((item, i) => (
                   <BaseText
                     key={i}
                     style={{ color: theme?.theme.subTextColor, lineHeight: 20 }}
                   >
                     {item}
-                    {i < creators.length - 1 ? ', ' : ''}
+                    {i < data.creators.length - 1 ? ', ' : ''}
                   </BaseText>
                 ))}
               </View>
@@ -203,7 +191,7 @@ const DetailScreen: React.FC = () => {
               </BaseText>
 
               <BaseText style={{ color: theme?.theme.subTextColor }}>
-                {data?.eposides_count}
+                {data?.episodesCount}
               </BaseText>
             </View>
 

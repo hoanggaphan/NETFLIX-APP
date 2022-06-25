@@ -1,21 +1,17 @@
 export type Movie = {
-  id: string;
+  _id: string;
   name: string;
   description: string;
-  cover_img: string;
-  banner_img: string;
-  format: number;
-  status: number;
-  start_date: string;
-  trailer_url: string;
-  eposides_count: number;
-  eposide_duration: number;
+  coverImg: string;
+  bannerImg: string;
+  trailerUrl: string;
+  episodesCount: number;
   score: number;
   genres: string[];
-  recommendations: Movie[];
   actors: string[];
   creators: string[];
-  episodes: Episode[];
+  createdAt: number;
+  updatedAt: number;
 };
 
 export type Episode = {
