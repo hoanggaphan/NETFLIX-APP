@@ -7,12 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { getEpisodes } from '../api/EpisodeApi';
 import { getMovie } from '../api/MovieApi';
 import { BaseText, BoldText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
-import { Episode, Movie } from '../types/movie';
+import { Movie } from '../types/movie';
 import {
   RootStackNavigationProp,
   RootStackRouteProp,
@@ -30,7 +29,6 @@ const DetailScreen: React.FC = () => {
   const theme = useTheme();
   const [data, setData] = useState<Movie>();
   const navigation = useNavigation<RootStackNavigationProp>();
-  const [episodes, setEpisodes] = useState<Episode[]>();
   const isMounted = useIsMounted();
 
   useEffect(() => {
@@ -39,12 +37,6 @@ const DetailScreen: React.FC = () => {
         .then((res) => isMounted() && setData(res))
         .catch((err) => console.error(err));
     }
-  }, []);
-
-  useEffect(() => {
-    getEpisodes()
-      .then((res) => isMounted() && setEpisodes(res))
-      .catch((err) => console.error(err));
   }, []);
 
   const handlePress = (id: string, title: string) => {
@@ -200,14 +192,14 @@ const DetailScreen: React.FC = () => {
             </BoldText>
 
             <View style={{ marginTop: 15 }}>
-              {episodes?.map((item, i) => (
+              {data.episodes?.map((item, i) => (
                 <TouchableOpacity
                   key={i}
                   style={{
                     flexDirection: 'row',
                     marginBottom: 13,
                   }}
-                  onPress={() => handlePress(item.id, item.name)}
+                  onPress={() => handlePress(item._id, item.name)}
                 >
                   <Image
                     style={{

@@ -12,12 +12,13 @@ export type Movie = {
   creators: string[];
   createdAt: number;
   updatedAt: number;
+  episodes: Episode[];
 };
 
 export type Episode = {
-  id: string;
-  movieId: string;
+  _id: string;
   name: string;
+  movieId: string;
   img: string;
   subName: string;
   duration: number;
