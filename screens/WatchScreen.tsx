@@ -9,41 +9,35 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { getEpisode, getEpisodes } from '../api/EpisodeApi';
+import { getEpisode } from '../api/EpisodeApi';
 import { BaseText, BoldText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
 import { Episode } from '../types/movie';
 import {
   RootStackNativeStackNavigationProp,
-  RootStackRouteProp,
+  WatchScreenRouteProp,
 } from '../types/navigation';
 
 export default function WatchScreen() {
   const theme = useTheme();
   const navigation = useNavigation<RootStackNativeStackNavigationProp>();
-  const route = useRoute<RootStackRouteProp>();
-  const [episodes, setEpisodes] = useState<Episode[]>();
+  const route = useRoute<WatchScreenRouteProp>();
   const [episode, setEpisode] = useState<Episode>();
   const scrollRef = useRef<ScrollView>();
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    if (route.params?.id) {
-      getEpisode(route.params.id)
-        .then((res) => isMounted() && setEpisode(res))
-        .catch((err) => console.error(err));
-    }
-  }, []);
-
-  useEffect(() => {
-    getEpisodes()
-      .then((res) => isMounted() && setEpisodes(res))
+    getEpisode(route.params.id)
+      .then((res) => isMounted() && setEpisode(res))
       .catch((err) => console.error(err));
   }, []);
 
   const handlePress = (id: string, title: string) => {
-    navigation.replace('Watch', { id, title });
+    navigation.replace('Watch', {
+      id,
+      title,
+    });
   };
 
   return (
@@ -55,7 +49,7 @@ export default function WatchScreen() {
         <Video
           style={{ ...styles.size, backgroundColor: 'black' }}
           source={{
-            uri: `${episode?.video_url}`,
+            uri: `${episode?.videoUrl}`,
           }}
           useNativeControls
           resizeMode={ResizeMode.STRETCH}
@@ -160,13 +154,13 @@ export default function WatchScreen() {
           ></View>
 
           <View>
-            {episodes?.map((item, i) => (
+            {episode.episodes?.map((item, i) => (
               <TouchableOpacity
                 key={i}
                 style={{
                   paddingBottom: 20,
                 }}
-                onPress={() => handlePress(item.id, item.name)}
+                onPress={() => handlePress(item._id, item.name)}
               >
                 <Image
                   style={styles.size}

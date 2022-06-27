@@ -10,7 +10,9 @@ export type RootStackParamList = {
 export type RootStackNavigationProp = NavigationProp<RootStackParamList>;
 export type RootStackNativeStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
-export type RootStackRouteProp = RouteProp<RootStackParamList>;
+
+export type WatchScreenRouteProp = RouteProp<RootStackParamList, 'Watch'>;
+export type DetailScreenRouteProp = RouteProp<RootStackParamList, 'Detail'>;
 
 export type UserStackParamList = {
   Settings: undefined;

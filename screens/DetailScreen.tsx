@@ -13,8 +13,8 @@ import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
 import { Movie } from '../types/movie';
 import {
+  DetailScreenRouteProp,
   RootStackNavigationProp,
-  RootStackRouteProp,
 } from '../types/navigation';
 
 const styles = StyleSheet.create({
@@ -25,22 +25,23 @@ const styles = StyleSheet.create({
 });
 
 const DetailScreen: React.FC = () => {
-  const route = useRoute<RootStackRouteProp>();
+  const route = useRoute<DetailScreenRouteProp>();
   const theme = useTheme();
   const [data, setData] = useState<Movie>();
   const navigation = useNavigation<RootStackNavigationProp>();
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    if (route.params?.id) {
-      getMovie(route.params.id)
-        .then((res) => isMounted() && setData(res))
-        .catch((err) => console.error(err));
-    }
+    getMovie(route.params.id)
+      .then((res) => isMounted() && setData(res))
+      .catch((err) => console.error(err));
   }, []);
 
   const handlePress = (id: string, title: string) => {
-    navigation.navigate('Watch', { id, title });
+    navigation.navigate('Watch', {
+      id,
+      title,
+    });
   };
 
   return (

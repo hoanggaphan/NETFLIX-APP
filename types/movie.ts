@@ -22,5 +22,6 @@ export type Episode = {
   img: string;
   subName: string;
   duration: number;
-  video_url: string;
+  videoUrl: string;
+  episodes: Episode[];
 };
