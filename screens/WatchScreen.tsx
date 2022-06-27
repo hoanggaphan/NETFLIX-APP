@@ -157,8 +157,10 @@ export default function WatchScreen() {
             {episode.episodes?.map((item, i) => (
               <TouchableOpacity
                 key={i}
+                disabled={item._id === route.params.id ? true : false}
                 style={{
                   paddingBottom: 20,
+                  opacity: item._id === route.params.id ? 0.3 : 1,
                 }}
                 onPress={() => handlePress(item._id, item.name)}
               >
