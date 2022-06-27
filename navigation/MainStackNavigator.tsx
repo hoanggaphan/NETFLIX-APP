@@ -33,7 +33,7 @@ function MainStackNavigator() {
         options={({ route }: any) => ({
           headerShown: true,
           title: route.params.title,
-          headerBackTitle: 'Trở lại',
+          headerBackTitle: '',
         })}
         name='Detail'
         component={DetailScreen}
@@ -42,7 +42,7 @@ function MainStackNavigator() {
         options={({ route }: any) => ({
           headerShown: true,
           title: route.params.title,
-          headerBackTitle: 'Trở lại',
+          headerBackTitle: '',
           animation: 'slide_from_bottom',
         })}
         name='Watch'

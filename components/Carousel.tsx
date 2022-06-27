@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import { getMoviesCarousel } from '../api/MovieApi';
+import { getMovies } from '../api/MovieApi';
 import { Movie } from '../types/movie';
 import { RootStackNavigationProp } from '../types/navigation';
 
@@ -31,7 +31,7 @@ const CarouselCards = () => {
   };
 
   useEffect(() => {
-    getMoviesCarousel()
+    getMovies('?newUpdated=true&limit=5')
       .then((res) => setData(res))
       .catch((err) => console.error(err));
   }, []);

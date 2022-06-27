@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { getMovies } from '../api/MovieApi';
 import { BaseText } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import { Movie } from '../types/movie';
@@ -22,6 +23,18 @@ const SearchScreen: React.FC = () => {
 
   const handleChange = (search: string) => {
     setSearch(search);
+  };
+
+  const handleSubmit = async () => {
+    let result = [];
+    if (search == '') return;
+    try {
+      result = await getMovies(`?keyword=${search}&limit=30`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setData(result);
+    }
   };
 
   const MovieItem = ({ item, index }: { item: Movie; index: number }) => {
@@ -67,6 +80,7 @@ const SearchScreen: React.FC = () => {
       <SearchBar
         placeholder='Tìm kiếm phim...'
         onChangeText={handleChange}
+        onSubmitEditing={handleSubmit}
         value={search}
         containerStyle={{
           backgroundColor: theme?.theme.themeMode === 'dark' ? '#333' : 'white',
@@ -95,13 +109,24 @@ const SearchScreen: React.FC = () => {
           size: 30,
         }}
       />
-
-      <FlatList
-        data={data}
-        renderItem={MemoizedMovieItem}
-        keyExtractor={(item) => item._id}
-        showsHorizontalScrollIndicator={false}
-      />
+      {search && !data.length ? (
+        <BaseText
+          style={{
+            color: theme?.theme.textColor,
+            paddingLeft: 10,
+            paddingTop: 10,
+          }}
+        >
+          Không tìm thấy kết quả thử với từ khóa khác
+        </BaseText>
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={MemoizedMovieItem}
+          keyExtractor={(item) => item._id}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };

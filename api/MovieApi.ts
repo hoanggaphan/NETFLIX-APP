@@ -1,17 +1,40 @@
 import axios from 'axios';
 import { ipLocal } from './Constants';
 
-export async function getMovies() {
-  const res = await axios.get(`http://${ipLocal}:3000/api/v1/movies`);
+export async function getMovies(queries: string = '') {
+  const res = await axios.get(`http://${ipLocal}:3000/api/v1/movies${queries}`);
+  return res.data;
+}
+
+export async function getRandomMovies(limit: string = '') {
+  const res = await axios.get(
+    `http://${ipLocal}:3000/api/v1/movies/random?limit${limit}`
+  );
+  return res.data;
+}
+
+export async function getMoviesPopularInNetflix(limit: string = '') {
+  const res = await axios.get(
+    `http://${ipLocal}:3000/api/v1/movies/popular-in-netflix?limit${limit}`
+  );
+  return res.data;
+}
+
+export async function getGoodMovies(limit: string = '') {
+  const res = await axios.get(
+    `http://${ipLocal}:3000/api/v1/movies/good?limit${limit}`
+  );
+  return res.data;
+}
+
+export async function getNewUpdatedMovies(limit: string = '') {
+  const res = await axios.get(
+    `http://${ipLocal}:3000/api/v1/movies/new-updated?limit${limit}`
+  );
   return res.data;
 }
 
 export async function getMovie(id: string) {
   const res = await axios.get(`http://${ipLocal}:3000/api/v1/movies/${id}`);
-  return res.data;
-}
-
-export async function getMoviesCarousel() {
-  const res = await axios.get(`http://${ipLocal}:3000/api/v1/movies/carousel`);
   return res.data;
 }
