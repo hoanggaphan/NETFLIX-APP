@@ -14,6 +14,13 @@ export type likeReq = {
   episodeId: string;
 };
 
+export type updateUserReq = {
+  avatar?: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
+};
+
 export type loginRes = {
   _id: string;
   username: string;
@@ -21,6 +28,8 @@ export type loginRes = {
   email: string;
   phone: string;
   avatar: string;
+  roles: string[];
+  likeList: string[];
   accessToken: string;
   refreshToken: string;
 };
@@ -32,7 +41,7 @@ export type User = {
   email: string;
   phone: string;
   avatar: string;
-  roles: string;
+  roles: string[];
   likeList: string[];
 };
 

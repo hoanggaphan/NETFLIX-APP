@@ -1,9 +1,10 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon, Image, Skeleton } from '@rneui/base';
 import { ResizeMode, Video } from 'expo-av';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -19,22 +20,21 @@ import { RootState } from '../redux/store';
 import { Episode } from '../types/index';
 import {
   RootStackNativeStackNavigationProp,
+  SettingStackNavigationProp,
   WatchScreenRouteProp,
 } from '../types/navigation';
 
 export default function WatchScreen() {
   const theme = useTheme();
   const navigation = useNavigation<RootStackNativeStackNavigationProp>();
+  const navigationSetting = useNavigation<SettingStackNavigationProp>();
   const route = useRoute<WatchScreenRouteProp>();
   const [episode, setEpisode] = useState<Episode>();
   const isMounted = useIsMounted();
   const user = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useAppDispatch();
 
-  const isLiked = useMemo(
-    () => user?.likeList?.includes(route.params.id),
-    [user]
-  );
+  const isLiked = user?.likeList?.includes(route.params.id);
 
   useEffect(() => {
     getEpisode(route.params.id)
@@ -50,7 +50,15 @@ export default function WatchScreen() {
   };
 
   const handleLike = async () => {
-    if (!user) return;
+    if (!user) {
+      return Alert.alert('Bạn cần đăng nhập', 'Đi tới trang đăng nhập', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => navigationSetting.navigate('Login') },
+      ]);
+    }
 
     try {
       const newUser = await likeEpisode({
@@ -120,7 +128,7 @@ export default function WatchScreen() {
               </>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ marginLeft: 25 }}>
+            {/* <TouchableOpacity style={{ marginLeft: 25 }}>
               <>
                 <Icon
                   color={theme?.theme.iconColor}
@@ -138,7 +146,7 @@ export default function WatchScreen() {
                   Đánh giá
                 </BaseText>
               </>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity style={{ marginLeft: 25 }}>
               <>

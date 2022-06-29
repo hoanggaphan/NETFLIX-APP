@@ -34,18 +34,9 @@ const LoginScreen: React.FC = () => {
         password,
       });
 
-      const user = {
-        _id: data._id,
-        username: data.username,
-        fullName: data.fullName,
-        email: data.email,
-        phone: data.phone,
-        avatar: data.avatar,
-      };
-
       dispatch(
         setCredentials({
-          user,
+          user: data,
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
         })
