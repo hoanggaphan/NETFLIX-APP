@@ -3,7 +3,10 @@ import { Avatar, Button, Icon } from '@rneui/base';
 import { StyleSheet, View } from 'react-native';
 import { BaseText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
-import { UserStackNavigationProp } from '../types/navigation';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { setCredentials } from '../redux/reducer/authReducer';
+import { RootState } from '../redux/store';
+import { SettingStackNavigationProp } from '../types/navigation';
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -21,10 +24,22 @@ const styles = StyleSheet.create({
 
 const SettingsScreen: React.FC = () => {
   const theme = useTheme();
-  const navigation = useNavigation<UserStackNavigationProp>();
+  const navigation = useNavigation<SettingStackNavigationProp>();
+  const user = useAppSelector((state: RootState) => state.auth.user);
+  const dispatch = useAppDispatch();
 
   const handlePressLogin = () => {
     navigation.navigate('Login');
+  };
+
+  const handlePressLogout = () => {
+    dispatch(
+      setCredentials({
+        user: null,
+        accessToken: '',
+        refreshToken: '',
+      })
+    );
   };
 
   const handlePressEdit = () => {
@@ -34,69 +49,76 @@ const SettingsScreen: React.FC = () => {
   return (
     <Screen style={{ backgroundColor: theme?.theme.backgroundColor }}>
       <View style={styles.itemContainer}>
-        <Icon
-          style={{ marginTop: 10, marginBottom: 5 }}
-          color={theme?.theme.themeMode === 'dark' ? 'white' : 'black'}
-          name='user'
-          type='evilicon'
-          size={53}
-        />
-      </View>
-      <View style={styles.itemContainer}>
-        <Avatar
-          rounded
-          size={40}
-          source={{
-            uri: 'https://randomuser.me/api/portraits/men/36.jpg',
-          }}
-          containerStyle={{ backgroundColor: theme?.theme.avatarBgColor }}
-        />
+        {user?.avatar ? (
+          <Avatar
+            rounded
+            size={40}
+            source={{
+              uri: user.avatar,
+            }}
+            containerStyle={{ backgroundColor: theme?.theme.avatarBgColor }}
+          />
+        ) : (
+          <Icon
+            style={{ marginTop: 10, marginBottom: 5 }}
+            color={theme?.theme.themeMode === 'dark' ? 'white' : 'black'}
+            name='user'
+            type='evilicon'
+            size={53}
+          />
+        )}
       </View>
 
-      <Button
-        onPress={handlePressLogin}
-        buttonStyle={{
-          borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
-        }}
-        type='outline'
-        style={styles.button}
-      >
-        <Icon
-          color={theme?.theme.themeMode === 'dark' ? 'white' : 'black'}
-          style={styles.icon}
-          type='material'
-          name='login'
-        />
-        <BaseText
-          style={{
-            color: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
+      {!user && (
+        <Button
+          onPress={handlePressLogin}
+          buttonStyle={{
+            borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
           }}
+          type='outline'
+          style={styles.button}
         >
-          Đăng nhập
-        </BaseText>
-      </Button>
-      <Button
-        onPress={handlePressEdit}
-        buttonStyle={{
-          borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
-        }}
-        type='outline'
-        style={styles.button}
-      >
-        <Icon
-          color={theme?.theme.themeMode === 'dark' ? 'white' : 'black'}
-          style={styles.icon}
-          type='material'
-          name='edit'
-        />
-        <BaseText
-          style={{
-            color: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
+          <Icon
+            color={theme?.theme.themeMode === 'dark' ? 'white' : 'black'}
+            style={styles.icon}
+            type='material'
+            name='login'
+          />
+          <BaseText
+            style={{
+              color: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
+            }}
+          >
+            Đăng nhập
+          </BaseText>
+        </Button>
+      )}
+
+      {user && (
+        <Button
+          onPress={handlePressEdit}
+          buttonStyle={{
+            borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
           }}
+          type='outline'
+          style={styles.button}
         >
-          Chỉnh sửa thông tin
-        </BaseText>
-      </Button>
+          <Icon
+            color={theme?.theme.themeMode === 'dark' ? 'white' : 'black'}
+            style={styles.icon}
+            type='material'
+            name='edit'
+          />
+          <BaseText
+            style={{
+              color: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
+            }}
+          >
+            Chỉnh sửa thông tin
+          </BaseText>
+        </Button>
+      )}
+
       <Button
         buttonStyle={{
           borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
@@ -119,6 +141,31 @@ const SettingsScreen: React.FC = () => {
           Đổi màu
         </BaseText>
       </Button>
+
+      {user && (
+        <Button
+          buttonStyle={{
+            borderColor: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
+          }}
+          type='outline'
+          style={styles.button}
+          onPress={handlePressLogout}
+        >
+          <Icon
+            color={theme?.theme.themeMode === 'dark' ? 'white' : 'black'}
+            style={styles.icon}
+            type='font-awesome'
+            name='sign-out'
+          />
+          <BaseText
+            style={{
+              color: theme?.theme.themeMode === 'dark' ? 'white' : 'black',
+            }}
+          >
+            Đăng xuất
+          </BaseText>
+        </Button>
+      )}
     </Screen>
   );
 };

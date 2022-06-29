@@ -1,22 +1,20 @@
 import { useNavigation } from '@react-navigation/native';
 import { Button } from '@rneui/base';
 import { useState } from 'react';
-import { View } from 'react-native';
-import { login } from '../api/AuthApi';
+import { View, Alert } from 'react-native';
+import { register } from '../api/AuthApi';
 import { BaseText, Screen } from '../components';
 import CustomInput from '../components/CustomInput';
 import { useTheme } from '../context/ThemeProvider';
-import { useAppDispatch } from '../redux/hooks';
-import { setCredentials } from '../redux/reducer/authReducer';
 import { SettingStackNavigationProp } from '../types/navigation';
 
-const LoginScreen: React.FC = () => {
+const RegisterScreen: React.FC = () => {
   const theme = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setErrors] = useState<any>(null);
+  const [confirmPass, setConfirmPass] = useState('');
+  const [errors, setErrors] = useState([]);
   const navigation = useNavigation<SettingStackNavigationProp>();
-  const dispatch = useAppDispatch();
 
   const handleChangeUsername = (keyword: string) => {
     setUsername(keyword);
@@ -24,40 +22,34 @@ const LoginScreen: React.FC = () => {
   const handleChangePass = (keyword: string) => {
     setPassword(keyword);
   };
+  const handleChangeConfirmPass = (keyword: string) => {
+    setConfirmPass(keyword);
+  };
 
-  const handleLogin = async () => {
-    setErrors(null);
+  const handleRegister = async () => {
+    setErrors([]);
 
     try {
-      const data = await login({
+      const data = await register({
         username,
         password,
+        password_confirmation: confirmPass,
       });
-
-      const user = {
-        _id: data._id,
-        username: data.username,
-        fullName: data.fullName,
-        email: data.email,
-        phone: data.phone,
-        avatar: data.avatar,
-      };
-
-      dispatch(
-        setCredentials({
-          user,
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
-        })
-      );
-      navigation.goBack();
+      if (data)
+        Alert.alert(
+          'Đăng ký tài khoản thành công',
+          'Bạn đã đăng ký tài khoản thành, quay lại trang đăng nhập',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            { text: 'OK', onPress: () => navigation.goBack() },
+          ]
+        );
     } catch (error: any) {
       if (error.response.data) setErrors(error.response.data);
     }
-  };
-
-  const handleRegister = () => {
-    navigation.navigate('Register');
   };
 
   return (
@@ -81,29 +73,29 @@ const LoginScreen: React.FC = () => {
           placeholder='Mật khẩu'
           secureTextEntry={true}
         />
-        <Button title='Đăng nhập' onPress={handleLogin} />
-
-        <Button
-          style={{ marginTop: 15 }}
-          title='Đăng ký'
-          onPress={handleRegister}
+        <CustomInput
+          onChangeText={handleChangeConfirmPass}
+          placeholder='Nhập lại mật khẩu'
+          secureTextEntry={true}
         />
-        {error && error.message && (
-          <View style={{ marginTop: 15 }}>
+        <Button title='Đăng ký' onPress={handleRegister} />
+        <View style={{ marginTop: 15 }}>
+          {errors.map((error, i) => (
             <BaseText
+              key={i}
               style={{
                 color: theme?.theme.primary,
                 marginTop: 10,
                 fontSize: 13,
               }}
             >
-              {error.message}
+              {error}
             </BaseText>
-          </View>
-        )}
+          ))}
+        </View>
       </View>
     </Screen>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

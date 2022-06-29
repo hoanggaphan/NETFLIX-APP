@@ -12,20 +12,16 @@ import CarouselCards from '../components/Carousel';
 import Header from '../components/Header';
 import MoviesRow from '../components/MoviesRow';
 import { useTheme } from '../context/ThemeProvider';
-import { Movie } from '../types/movie';
+import { Movie } from '../types/index';
 
 const HomeScreen: React.FC = () => {
   const theme = useTheme();
-  const [data, setData] = useState<Movie[]>([]);
   const [moviesRandom, setMoviesRandom] = useState<Movie[]>([]);
   const [netflix, setNetflix] = useState<Movie[]>([]);
   const [goodMovie, setGoodMovie] = useState<Movie[]>([]);
   const [newMovie, setNewMovie] = useState<Movie[]>([]);
 
   useEffect(() => {
-    getMovies()
-      .then((res) => setData(res))
-      .catch((err) => console.error(err));
     getRandomMovies()
       .then((res) => setMoviesRandom(res))
       .catch((err) => console.error(err));
@@ -48,9 +44,6 @@ const HomeScreen: React.FC = () => {
         <View style={{ marginTop: 15 }}>
           <CarouselCards />
 
-          <View style={{ marginTop: 35 }}>
-            <MoviesRow title='Phim đã xem' data={data} />
-          </View>
           <View style={{ marginTop: 35 }}>
             <MoviesRow title='Mới cập nhật' data={newMovie} />
           </View>

@@ -12,7 +12,7 @@ import {
 import { getMovies } from '../api/MovieApi';
 import { BaseText } from '../components';
 import { useTheme } from '../context/ThemeProvider';
-import { Movie } from '../types/movie';
+import { Movie } from '../types/index';
 import { RootStackNavigationProp } from '../types/navigation';
 
 const SearchScreen: React.FC = () => {
@@ -20,6 +20,7 @@ const SearchScreen: React.FC = () => {
   const [search, setSearch] = useState('');
   const navigation = useNavigation<RootStackNavigationProp>();
   const [data, setData] = useState([]);
+  const [errMess, setErrMess] = useState('');
 
   const handleChange = (search: string) => {
     setSearch(search);
@@ -28,10 +29,13 @@ const SearchScreen: React.FC = () => {
   const handleSubmit = async () => {
     let result = [];
     if (search == '') return;
+    setErrMess('');
     try {
       result = await getMovies(`?keyword=${search}&limit=30`);
-    } catch (error) {
-      console.error(error);
+    } catch (err: any) {
+      if (err.response.data && err.response.data.message)
+        return setErrMess(err.response.data.message);
+      console.error(err);
     } finally {
       setData(result);
     }
@@ -109,7 +113,8 @@ const SearchScreen: React.FC = () => {
           size: 30,
         }}
       />
-      {search && !data.length ? (
+
+      {errMess.length > 0 && (
         <BaseText
           style={{
             color: theme?.theme.textColor,
@@ -117,16 +122,16 @@ const SearchScreen: React.FC = () => {
             paddingTop: 10,
           }}
         >
-          Không tìm thấy kết quả thử với từ khóa khác
+          {errMess}
         </BaseText>
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={MemoizedMovieItem}
-          keyExtractor={(item) => item._id}
-          showsHorizontalScrollIndicator={false}
-        />
       )}
+
+      <FlatList
+        data={data}
+        renderItem={MemoizedMovieItem}
+        keyExtractor={(item) => item._id}
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };

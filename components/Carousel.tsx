@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { getMovies } from '../api/MovieApi';
-import { Movie } from '../types/movie';
+import { Movie } from '../types/index';
 import { RootStackNavigationProp } from '../types/navigation';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;

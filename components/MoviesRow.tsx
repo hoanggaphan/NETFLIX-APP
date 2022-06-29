@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { BaseText, BoldText } from '.';
 import { useTheme } from '../context/ThemeProvider';
-import { Movie } from '../types/movie';
+import { Movie } from '../types/index';
 import { RootStackNavigationProp } from '../types/navigation';
 
 const styles = StyleSheet.create({

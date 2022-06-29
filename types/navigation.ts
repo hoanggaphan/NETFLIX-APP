@@ -14,9 +14,10 @@ export type RootStackNativeStackNavigationProp =
 export type WatchScreenRouteProp = RouteProp<RootStackParamList, 'Watch'>;
 export type DetailScreenRouteProp = RouteProp<RootStackParamList, 'Detail'>;
 
-export type UserStackParamList = {
+export type SettingStackParamList = {
   Settings: undefined;
-  Login: undefined;
   EditUser: undefined;
+  Login: undefined;
+  Register: undefined;
 };
-export type UserStackNavigationProp = NavigationProp<UserStackParamList>;
+export type SettingStackNavigationProp = NavigationProp<SettingStackParamList>;

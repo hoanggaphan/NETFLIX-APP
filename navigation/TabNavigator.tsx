@@ -3,8 +3,10 @@ import { Icon } from '@rneui/base';
 import { useTheme } from '../context/ThemeProvider';
 import DownLoadScreen from '../screens/DownLoadScreen';
 import SearchScreen from '../screens/SearchScreen';
-import UserScreen from '../screens/SettingsScreen';
-import { MainStackNavigator, UserStackNavigator } from './MainStackNavigator';
+import {
+  MainStackNavigator,
+  SettingStackNavigator,
+} from './MainStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -113,8 +115,8 @@ const BottomTabNavigator = () => {
           title: 'Cài đặt',
           headerShown: false,
         }}
-        name='User'
-        component={UserStackNavigator}
+        name='UserSettings'
+        component={SettingStackNavigator}
       />
     </Tab.Navigator>
   );

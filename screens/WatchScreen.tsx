@@ -1,19 +1,22 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon, Image, Skeleton } from '@rneui/base';
 import { ResizeMode, Video } from 'expo-av';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { getEpisode } from '../api/EpisodeApi';
+import { likeEpisode } from '../api/UserApi';
 import { BaseText, BoldText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
-import { Episode } from '../types/movie';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { setUser } from '../redux/reducer/authReducer';
+import { RootState } from '../redux/store';
+import { Episode } from '../types/index';
 import {
   RootStackNativeStackNavigationProp,
   WatchScreenRouteProp,
@@ -24,8 +27,14 @@ export default function WatchScreen() {
   const navigation = useNavigation<RootStackNativeStackNavigationProp>();
   const route = useRoute<WatchScreenRouteProp>();
   const [episode, setEpisode] = useState<Episode>();
-  const scrollRef = useRef<ScrollView>();
   const isMounted = useIsMounted();
+  const user = useAppSelector((state: RootState) => state.auth.user);
+  const dispatch = useAppDispatch();
+
+  const isLiked = useMemo(
+    () => user?.likeList?.includes(route.params.id),
+    [user]
+  );
 
   useEffect(() => {
     getEpisode(route.params.id)
@@ -40,11 +49,22 @@ export default function WatchScreen() {
     });
   };
 
+  const handleLike = async () => {
+    if (!user) return;
+
+    try {
+      const newUser = await likeEpisode({
+        userId: user._id,
+        episodeId: route.params.id,
+      });
+      dispatch(setUser({ user: newUser }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <Screen
-      ref={scrollRef}
-      style={{ backgroundColor: theme?.theme.backgroundColor }}
-    >
+    <Screen style={{ backgroundColor: theme?.theme.backgroundColor }}>
       {episode ? (
         <Video
           style={{ ...styles.size, backgroundColor: 'black' }}
@@ -78,10 +98,12 @@ export default function WatchScreen() {
               flexDirection: 'row',
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleLike}>
               <>
                 <Icon
-                  color={theme?.theme.iconColor}
+                  color={
+                    isLiked ? theme?.theme.primary : theme?.theme.iconColor
+                  }
                   name='heart'
                   type='ant-design'
                   size={20}

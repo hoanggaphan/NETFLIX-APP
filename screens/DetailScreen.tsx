@@ -11,7 +11,7 @@ import { getMovie } from '../api/MovieApi';
 import { BaseText, BoldText, Screen } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import useIsMounted from '../hooks/useIsMounted';
-import { Movie } from '../types/movie';
+import { Movie } from '../types/index';
 import {
   DetailScreenRouteProp,
   RootStackNavigationProp,

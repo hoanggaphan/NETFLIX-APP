@@ -4,6 +4,7 @@ import DetailScreen from '../screens/DetailScreen';
 import EditUserScreen from '../screens/EditUserScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import WatchScreen from '../screens/WatchScreen';
 
@@ -52,7 +53,7 @@ function MainStackNavigator() {
   );
 }
 
-function UserStackNavigator() {
+function SettingStackNavigator() {
   const theme = useTheme();
 
   return (
@@ -73,15 +74,7 @@ function UserStackNavigator() {
         name='Settings'
         component={SettingsScreen}
       />
-      <Stack.Screen
-        options={{
-          headerShown: true,
-          title: 'Đăng nhập',
-          headerBackTitle: '',
-        }}
-        name='Login'
-        component={LoginScreen}
-      />
+
       <Stack.Screen
         options={{
           headerShown: true,
@@ -91,8 +84,29 @@ function UserStackNavigator() {
         name='EditUser'
         component={EditUserScreen}
       />
+
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: 'Đăng nhập',
+            headerBackTitle: '',
+          }}
+          name='Login'
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: 'Đăng ký',
+            headerBackTitle: '',
+          }}
+          name='Register'
+          component={RegisterScreen}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
 
-export { MainStackNavigator, UserStackNavigator };
+export { MainStackNavigator, SettingStackNavigator };

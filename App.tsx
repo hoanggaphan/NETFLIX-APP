@@ -3,17 +3,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
+import { LogBox } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import CustomStatusBar from './components/CustomStatusBar';
 import { darkTheme, defaultTheme } from './constants/theme';
 import ThemeProvider from './context/ThemeProvider';
 import Navigation from './navigation';
-import { LogBox, StatusBar } from 'react-native';
-import CustomStatusBar from './components/CustomStatusBar';
+import { store } from './redux/store';
 
-LogBox.ignoreLogs([
-  'ViewPropTypes will be removed',
-  'ColorPropType will be removed',
-]);
+LogBox.ignoreAllLogs(true); //Ignore all log notifications
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -57,11 +56,13 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <ThemeProvider theme={theme}>
-        <Navigation onMounted={onLayoutRootView} />
-        <CustomStatusBar />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <ThemeProvider theme={theme}>
+          <Navigation onMounted={onLayoutRootView} />
+          <CustomStatusBar />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
