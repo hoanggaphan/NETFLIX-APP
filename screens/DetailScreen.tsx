@@ -14,7 +14,7 @@ import useIsMounted from '../hooks/useIsMounted';
 import { Movie } from '../types/index';
 import {
   DetailScreenRouteProp,
-  RootStackNavigationProp,
+  MainStackNavigationProp,
 } from '../types/navigation';
 
 const styles = StyleSheet.create({
@@ -28,7 +28,7 @@ const DetailScreen: React.FC = () => {
   const route = useRoute<DetailScreenRouteProp>();
   const theme = useTheme();
   const [data, setData] = useState<Movie>();
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const navigation = useNavigation<MainStackNavigationProp>();
   const isMounted = useIsMounted();
 
   useEffect(() => {

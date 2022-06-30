@@ -13,12 +13,12 @@ import { getMovies } from '../api/MovieApi';
 import { BaseText } from '../components';
 import { useTheme } from '../context/ThemeProvider';
 import { Movie } from '../types/index';
-import { RootStackNavigationProp } from '../types/navigation';
+import { MainStackNavigationProp } from '../types/navigation';
 
 const SearchScreen: React.FC = () => {
   const theme = useTheme();
   const [search, setSearch] = useState('');
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const navigation = useNavigation<MainStackNavigationProp>();
   const [data, setData] = useState([]);
   const [errMess, setErrMess] = useState('');
 

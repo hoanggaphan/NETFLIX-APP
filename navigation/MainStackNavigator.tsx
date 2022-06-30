@@ -3,8 +3,6 @@ import { useTheme } from '../context/ThemeProvider';
 import DetailScreen from '../screens/DetailScreen';
 import EditUserScreen from '../screens/EditUserScreen';
 import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import WatchScreen from '../screens/WatchScreen';
 
@@ -84,27 +82,6 @@ function SettingStackNavigator() {
         name='EditUser'
         component={EditUserScreen}
       />
-
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            title: 'Đăng nhập',
-            headerBackTitle: '',
-          }}
-          name='Login'
-          component={LoginScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            title: 'Đăng ký',
-            headerBackTitle: '',
-          }}
-          name='Register'
-          component={RegisterScreen}
-        />
-      </Stack.Group>
     </Stack.Navigator>
   );
 }

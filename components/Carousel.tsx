@@ -11,7 +11,7 @@ import {
 import Carousel from 'react-native-snap-carousel';
 import { getMovies } from '../api/MovieApi';
 import { Movie } from '../types/index';
-import { RootStackNavigationProp } from '../types/navigation';
+import { MainStackNavigationProp } from '../types/navigation';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.78);
@@ -24,7 +24,7 @@ type CarouselCardItem = {
 const CarouselCards = () => {
   const isCarousel = useRef(null);
   const [data, setData] = useState<any>([]);
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const navigation = useNavigation<MainStackNavigationProp>();
 
   const handlePress = (item: Movie) => {
     navigation.navigate('Detail', { id: item._id, title: item.name });

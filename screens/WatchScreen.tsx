@@ -1,9 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon, Image, Skeleton } from '@rneui/base';
 import { ResizeMode, Video } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
-import * as Permissions from 'expo-permissions';
 import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -22,17 +19,22 @@ import { setUser } from '../redux/reducer/authReducer';
 import { RootState } from '../redux/store';
 import { Episode } from '../types/index';
 import {
-  RootStackNativeStackNavigationProp,
+  MainStackNativeStackNavigationProp,
+  RootStackNavigationProp,
   WatchScreenRouteProp,
 } from '../types/navigation';
 
 export default function WatchScreen() {
   const theme = useTheme();
-  const navigation = useNavigation<RootStackNativeStackNavigationProp>();
+  const navigation = useNavigation<MainStackNativeStackNavigationProp>();
+  const navigationRoot = useNavigation<RootStackNavigationProp>();
   const route = useRoute<WatchScreenRouteProp>();
   const [episode, setEpisode] = useState<Episode>();
   const isMounted = useIsMounted();
   const user = useAppSelector((state: RootState) => state.auth.user);
+  const accessToken = useAppSelector(
+    (state: RootState) => state.auth.accessToken
+  );
   const dispatch = useAppDispatch();
 
   const isLiked = user?.likeList?.includes(route.params.id);
@@ -52,46 +54,23 @@ export default function WatchScreen() {
 
   const handleLike = async () => {
     if (!user) {
-      return Alert.alert('Bạn cần đăng nhập', '', [{ text: 'OK' }]);
+      return Alert.alert('Bạn cần đăng nhập', 'Đi tới trang đăng nhập', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => navigationRoot.navigate('Login') },
+      ]);
     }
 
     try {
-      const newUser = await likeEpisode({
+      const newUser = await likeEpisode(accessToken, {
         userId: user._id,
         episodeId: route.params.id,
       });
       dispatch(setUser({ user: newUser }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const downloadFile = async () => {
-    if (!user) {
-      return Alert.alert('Bạn cần đăng nhập', '', [{ text: 'OK' }]);
-    }
-    const { status } = await Permissions.askAsync(
-      Permissions.MEDIA_LIBRARY_WRITE_ONLY
-    );
-
-    // const uri = 'http://techslides.com/demos/sample-videos/small.mp4';
-    // let fileUri = FileSystem.documentDirectory + 'small.mp4';
-    // FileSystem.downloadAsync(uri, fileUri)
-    //   .then(({ uri }) => {
-    //     saveFile(uri);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-  };
-
-  const saveFile = async (fileUri: string) => {
-    const { status } = await Permissions.askAsync(
-      Permissions.MEDIA_LIBRARY_WRITE_ONLY
-    );
-    if (status === 'granted') {
-      const asset = await MediaLibrary.createAssetAsync(fileUri);
-      await MediaLibrary.createAlbumAsync('Download', asset, false);
+    } catch (error: any) {
+      console.error(error.response.data);
     }
   };
 
@@ -172,7 +151,7 @@ export default function WatchScreen() {
               </>
             </TouchableOpacity> */}
 
-            <TouchableOpacity onPress={downloadFile} style={{ marginLeft: 25 }}>
+            {/* <TouchableOpacity style={{ marginLeft: 25 }}>
               <>
                 <Icon
                   color={theme?.theme.iconColor}
@@ -190,7 +169,7 @@ export default function WatchScreen() {
                   Tải xuống
                 </BaseText>
               </>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           <BoldText style={{ marginTop: 30, color: theme?.theme.textColor }}>

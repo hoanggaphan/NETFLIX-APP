@@ -244,12 +244,14 @@ const EditUserScreen: React.FC = () => {
             value={oldPass}
             onChangeText={handleChangeOldPass}
             placeholder='Mật khẩu cũ'
+            secureTextEntry={true}
           />
 
           <CustomInput
             value={newPass}
             onChangeText={handleChangeNewPass}
             placeholder='Mật khẩu mới'
+            secureTextEntry={true}
           />
           <Button title='Cập nhật mật khẩu' onPress={handleUpdateNewPass} />
         </View>

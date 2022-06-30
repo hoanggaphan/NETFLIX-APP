@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from '@rneui/base';
 import { useTheme } from '../context/ThemeProvider';
-import DownLoadScreen from '../screens/DownLoadScreen';
+import LikeListScreen from '../screens/LikeListScreen';
 import SearchScreen from '../screens/SearchScreen';
 import {
   MainStackNavigator,
@@ -80,21 +80,21 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Icon
-                type='ionicon'
-                name='download'
+                type='antdesign'
+                name='heart'
                 color={theme?.theme.tabBarIcon}
               />
             ) : (
               <Icon
-                type='ionicon'
-                name='download-outline'
+                type='antdesign'
+                name='hearto'
                 color={theme?.theme.tabBarIcon}
               />
             ),
-          title: 'Tải xuống',
+          title: 'Yêu thích',
         }}
-        name='Download'
-        component={DownLoadScreen}
+        name='LikeList'
+        component={LikeListScreen}
       />
       <Tab.Screen
         options={{
