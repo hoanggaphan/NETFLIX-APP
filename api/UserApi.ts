@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { likeReq, updatePassReq, updateUserReq } from '../types';
-import { ipLocal } from './Constants';
+import { apiUrl } from './Constants';
 
 export async function likeEpisode(token: string, likeReq: likeReq) {
   const res = await axios.post(
-    `http://${ipLocal}:3000/api/v1/users/like-episode`,
+    // `http://${ipLocal}:3000/api/v1/users/like-episode`,
+    `${apiUrl}/api/v1/users/like-episode`,
     likeReq,
     {
       headers: {
@@ -21,7 +22,8 @@ export async function updateInfo(
   updateUserReq: updateUserReq
 ) {
   const res = await axios.put(
-    `http://${ipLocal}:3000/api/v1/users/${userId}`,
+    // `http://${ipLocal}:3000/api/v1/users/${userId}`,
+    `${apiUrl}/api/v1/users/${userId}`,
     updateUserReq,
     {
       headers: {
@@ -37,8 +39,22 @@ export async function updateNewPass(
   updatePassReq: updatePassReq
 ) {
   const res = await axios.post(
-    `http://${ipLocal}:3000/api/v1/users/change-password`,
+    // `http://${ipLocal}:3000/api/v1/users/change-password`,
+    `${apiUrl}/api/v1/users/change-password`,
     updatePassReq,
+    {
+      headers: {
+        'x-access-token': token,
+      },
+    }
+  );
+  return res.data;
+}
+
+export async function getLikeList(token: string, userId: string) {
+  const res = await axios.get(
+    // `http://${ipLocal}:3000/api/v1/users/like-list/${userId}`,
+    `${apiUrl}/api/v1/users/like-list/${userId}`,
     {
       headers: {
         'x-access-token': token,

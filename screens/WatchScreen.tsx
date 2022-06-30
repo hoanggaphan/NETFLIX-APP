@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Icon, Image, Skeleton } from '@rneui/base';
+import { Icon, Image } from '@rneui/base';
 import { ResizeMode, Video } from 'expo-av';
 import { useEffect, useState } from 'react';
 import {
@@ -43,7 +43,7 @@ export default function WatchScreen() {
     getEpisode(route.params.id)
       .then((res) => isMounted() && setEpisode(res))
       .catch((err) => console.error(err));
-  }, []);
+  }, [route.params.id]);
 
   const handlePress = (id: string, title: string) => {
     navigation.replace('Watch', {
@@ -229,20 +229,8 @@ export default function WatchScreen() {
         </View>
       ) : (
         <View style={styles.container}>
-          <View style={{ marginTop: 15, width: '100%' }}>
-            <Skeleton height={12} />
-          </View>
-          <View style={{ marginTop: 15, width: '100%' }}>
-            <Skeleton height={12} />
-          </View>
-          <View style={{ marginTop: 15, width: '100%' }}>
-            <Skeleton height={12} />
-          </View>
-          <View style={{ marginTop: 15, width: '50%' }}>
-            <Skeleton height={12} />
-          </View>
-          <View style={{ marginTop: 15, width: '50%' }}>
-            <Skeleton height={12} />
+          <View style={{ marginTop: 200 }}>
+            <ActivityIndicator size='large' />
           </View>
         </View>
       )}

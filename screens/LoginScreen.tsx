@@ -8,7 +8,10 @@ import CustomInput from '../components/CustomInput';
 import { useTheme } from '../context/ThemeProvider';
 import { useAppDispatch } from '../redux/hooks';
 import { setCredentials } from '../redux/reducer/authReducer';
-import { SettingStackNavigationProp } from '../types/navigation';
+import {
+  RootStackNavigationProp,
+  SettingStackNavigationProp,
+} from '../types/navigation';
 
 const LoginScreen: React.FC = () => {
   const theme = useTheme();
@@ -16,6 +19,7 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setErrors] = useState<any>(null);
   const navigation = useNavigation<SettingStackNavigationProp>();
+  const navigationRoot = useNavigation<RootStackNavigationProp>();
   const dispatch = useAppDispatch();
 
   const handleChangeUsername = (keyword: string) => {
@@ -48,7 +52,7 @@ const LoginScreen: React.FC = () => {
   };
 
   const handleRegister = () => {
-    navigation.navigate('Register');
+    navigationRoot.navigate('Register');
   };
 
   return (

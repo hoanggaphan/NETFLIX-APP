@@ -6,7 +6,10 @@ import { useTheme } from '../context/ThemeProvider';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setCredentials } from '../redux/reducer/authReducer';
 import { RootState } from '../redux/store';
-import { SettingStackNavigationProp } from '../types/navigation';
+import {
+  RootStackNavigationProp,
+  SettingStackNavigationProp
+} from '../types/navigation';
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -25,11 +28,12 @@ const styles = StyleSheet.create({
 const SettingsScreen: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation<SettingStackNavigationProp>();
+  const navigationRoot = useNavigation<RootStackNavigationProp>();
   const user = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useAppDispatch();
 
   const handlePressLogin = () => {
-    navigation.navigate('Login');
+    navigationRoot.navigate('Login');
   };
 
   const handlePressLogout = () => {

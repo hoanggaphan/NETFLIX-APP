@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Image, Skeleton } from '@rneui/base';
+import { Image } from '@rneui/base';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -53,6 +53,7 @@ const DetailScreen: React.FC = () => {
           PlaceholderContent={<ActivityIndicator />}
         />
       </View>
+
       <View style={{ paddingLeft: 10, paddingRight: 10 }}>
         {data ? (
           <>
@@ -233,26 +234,9 @@ const DetailScreen: React.FC = () => {
             </View>
           </>
         ) : (
-          <>
-            <View style={{ marginTop: 15, width: '100%' }}>
-              <Skeleton height={12} />
-            </View>
-            <View style={{ marginTop: 15, width: '100%' }}>
-              <Skeleton height={12} />
-            </View>
-            <View style={{ marginTop: 15, width: '100%' }}>
-              <Skeleton height={12} />
-            </View>
-            <View style={{ marginTop: 15, width: '100%' }}>
-              <Skeleton height={12} />
-            </View>
-            <View style={{ marginTop: 15, width: '50%' }}>
-              <Skeleton height={12} />
-            </View>
-            <View style={{ marginTop: 15, width: '50%' }}>
-              <Skeleton height={12} />
-            </View>
-          </>
+          <View style={{ marginTop: 200 }}>
+            <ActivityIndicator size='large' />
+          </View>
         )}
       </View>
     </Screen>
