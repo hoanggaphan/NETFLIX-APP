@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { updateInfo } from '../api/UserApi';
+import { updateInfo, updateNewPass } from '../api/UserApi';
 import { BaseText, Screen } from '../components';
 import CustomInput from '../components/CustomInput';
 import { useTheme } from '../context/ThemeProvider';
@@ -24,6 +24,9 @@ const EditUserScreen: React.FC = () => {
   const [phone, setPhone] = useState(user?.phone || '');
   const [errMsg, setErrMsg] = useState([]);
   const dispatch = useDispatch();
+  const [oldPass, setOldPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [errMsgPass, setErrMsgPass] = useState<any>(null);
 
   const [imageUpload, setImageUpload] = useState<any>(null);
 
@@ -76,9 +79,16 @@ const EditUserScreen: React.FC = () => {
   const handleChangePhone = (keyword: string) => {
     setPhone(keyword);
   };
+  const handleChangeOldPass = (keyword: string) => {
+    setOldPass(keyword);
+  };
+  const handleChangeNewPass = (keyword: string) => {
+    setNewPass(keyword);
+  };
 
   const handleUpdate = async () => {
     if (!user) return;
+    setErrMsg([]);
 
     try {
       const newUser = await updateInfo(user?._id, accessToken, {
@@ -95,6 +105,63 @@ const EditUserScreen: React.FC = () => {
 
       console.log(error);
     }
+  };
+
+  const handleUpdateNewPass = async () => {
+    if (!user) return;
+    if (!oldPass || !newPass)
+      return Alert.alert('Vui lòng nhập đầy đủ thông tin', '', [
+        { text: 'OK' },
+      ]);
+    setErrMsgPass(null);
+    try {
+      const newUser = await updateNewPass(accessToken, {
+        userId: user._id,
+        oldPass,
+        newPass,
+      });
+      delete newUser.password;
+      dispatch(setUser({ user: newUser }));
+      Alert.alert('Cập nhật mật khẩu thành công', '', [{ text: 'OK' }]);
+    } catch (error: any) {
+      if (error.response.data) return setErrMsgPass(error.response.data);
+
+      console.log(error);
+    }
+  };
+
+  const showErrMsgPass = () => {
+    if (!errMsgPass) return <></>;
+    if (errMsgPass.message)
+      return (
+        <BaseText
+          style={{
+            color: theme?.theme.primary,
+            marginTop: 10,
+            fontSize: 13,
+          }}
+        >
+          {errMsgPass.message}
+        </BaseText>
+      );
+
+    if (errMsgPass.length > 0)
+      return (
+        <>
+          {errMsgPass?.map((err: string, i: number) => (
+            <BaseText
+              key={i}
+              style={{
+                color: theme?.theme.primary,
+                marginTop: 10,
+                fontSize: 13,
+              }}
+            >
+              {err}
+            </BaseText>
+          ))}
+        </>
+      );
   };
 
   return (
@@ -138,25 +205,26 @@ const EditUserScreen: React.FC = () => {
           />
           <Button title='Cập nhật ảnh' onPress={uploadImg} />
         </View>
-        <CustomInput
-          value={fullName}
-          onChangeText={handleChangeFullName}
-          placeholder='Họ và tên'
-        />
-        <CustomInput
-          value={email}
-          onChangeText={handleChangeEmail}
-          placeholder='Email'
-        />
-        <CustomInput
-          value={phone}
-          onChangeText={handleChangePhone}
-          placeholder='Số điện thoại'
-        />
+        <View style={{ marginTop: 20 }}>
+          <CustomInput
+            value={fullName}
+            onChangeText={handleChangeFullName}
+            placeholder='Họ và tên'
+          />
+          <CustomInput
+            value={email}
+            onChangeText={handleChangeEmail}
+            placeholder='Email'
+          />
+          <CustomInput
+            value={phone}
+            onChangeText={handleChangePhone}
+            placeholder='Số điện thoại'
+          />
+          <Button title='Cập nhật thông tin' onPress={handleUpdate} />
+        </View>
 
-        <Button title='Cập nhật thông tin' onPress={handleUpdate} />
-
-        <View style={{ marginTop: 15 }}>
+        <View style={{ marginTop: 15, minHeight: 30 }}>
           {errMsg.map((err, i) => (
             <BaseText
               key={i}
@@ -170,6 +238,22 @@ const EditUserScreen: React.FC = () => {
             </BaseText>
           ))}
         </View>
+
+        <View style={{ marginTop: 20 }}>
+          <CustomInput
+            value={oldPass}
+            onChangeText={handleChangeOldPass}
+            placeholder='Mật khẩu cũ'
+          />
+
+          <CustomInput
+            value={newPass}
+            onChangeText={handleChangeNewPass}
+            placeholder='Mật khẩu mới'
+          />
+          <Button title='Cập nhật mật khẩu' onPress={handleUpdateNewPass} />
+        </View>
+        <View style={{ marginTop: 15, minHeight: 30 }}>{showErrMsgPass()}</View>
       </View>
     </Screen>
   );

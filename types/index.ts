@@ -21,6 +21,12 @@ export type updateUserReq = {
   phone?: string;
 };
 
+export type updatePassReq = {
+  userId: string;
+  oldPass: string;
+  newPass: string;
+};
+
 export type loginRes = {
   _id: string;
   username: string;

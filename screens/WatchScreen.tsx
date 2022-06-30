@@ -1,7 +1,10 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon, Image, Skeleton } from '@rneui/base';
 import { ResizeMode, Video } from 'expo-av';
-import { useEffect, useMemo, useState } from 'react';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import * as Permissions from 'expo-permissions';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -20,14 +23,12 @@ import { RootState } from '../redux/store';
 import { Episode } from '../types/index';
 import {
   RootStackNativeStackNavigationProp,
-  SettingStackNavigationProp,
   WatchScreenRouteProp,
 } from '../types/navigation';
 
 export default function WatchScreen() {
   const theme = useTheme();
   const navigation = useNavigation<RootStackNativeStackNavigationProp>();
-  const navigationSetting = useNavigation<SettingStackNavigationProp>();
   const route = useRoute<WatchScreenRouteProp>();
   const [episode, setEpisode] = useState<Episode>();
   const isMounted = useIsMounted();
@@ -51,13 +52,7 @@ export default function WatchScreen() {
 
   const handleLike = async () => {
     if (!user) {
-      return Alert.alert('Bạn cần đăng nhập', 'Đi tới trang đăng nhập', [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => navigationSetting.navigate('Login') },
-      ]);
+      return Alert.alert('Bạn cần đăng nhập', '', [{ text: 'OK' }]);
     }
 
     try {
@@ -68,6 +63,35 @@ export default function WatchScreen() {
       dispatch(setUser({ user: newUser }));
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const downloadFile = async () => {
+    if (!user) {
+      return Alert.alert('Bạn cần đăng nhập', '', [{ text: 'OK' }]);
+    }
+    const { status } = await Permissions.askAsync(
+      Permissions.MEDIA_LIBRARY_WRITE_ONLY
+    );
+
+    // const uri = 'http://techslides.com/demos/sample-videos/small.mp4';
+    // let fileUri = FileSystem.documentDirectory + 'small.mp4';
+    // FileSystem.downloadAsync(uri, fileUri)
+    //   .then(({ uri }) => {
+    //     saveFile(uri);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+  };
+
+  const saveFile = async (fileUri: string) => {
+    const { status } = await Permissions.askAsync(
+      Permissions.MEDIA_LIBRARY_WRITE_ONLY
+    );
+    if (status === 'granted') {
+      const asset = await MediaLibrary.createAssetAsync(fileUri);
+      await MediaLibrary.createAlbumAsync('Download', asset, false);
     }
   };
 
@@ -148,7 +172,7 @@ export default function WatchScreen() {
               </>
             </TouchableOpacity> */}
 
-            <TouchableOpacity style={{ marginLeft: 25 }}>
+            <TouchableOpacity onPress={downloadFile} style={{ marginLeft: 25 }}>
               <>
                 <Icon
                   color={theme?.theme.iconColor}
